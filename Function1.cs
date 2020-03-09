@@ -1,3 +1,11 @@
+/*
+This code is for
+1. function app
+2. generating the SAS token for a container
+3. storing the SAS token in Key vault.
+*/
+
+
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.Azure.WebJobs;
@@ -13,10 +21,10 @@ namespace FunctionApp1
         [FunctionName("Function1")]
         public static void Run([TimerTrigger("0 */5 * * * *")]TimerInfo myTimer, ILogger log)
         {
-            CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=dibsstore01;AccountKey=LniZz0s2RaURg3UYak+jhuz2M347eacog61NphdNKn17I9SBIq72P/oeMFtQrefxKCWIxIo2j+DvIVeZXHLi+g==;EndpointSuffix=core.windows.net");
+            CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=dontknow;AccountKey=LniZz9980s2RaURg3UYak+jhuz2M347eacog61NphdNKn17I9SBIq72P/oeMFtQrefxKCWIxIo2j+DvIVeZXHLi+g==;EndpointSuffix=core.windows.net");
 
             CloudBlobClient cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
-            CloudBlobContainer cloudBlobContainer = cloudBlobClient.GetContainerReference("dibscontainer01");
+            CloudBlobContainer cloudBlobContainer = cloudBlobClient.GetContainerReference("container01");
 
 
             SharedAccessBlobPolicy adHocPolicy = new SharedAccessBlobPolicy()
@@ -33,11 +41,11 @@ namespace FunctionApp1
             var keyVaultEndpoint = GetKeyVaultEndpoint();
             var client = new SecretClient(new Uri(keyVaultEndpoint), new DefaultAzureCredential());
 
-            client.SetSecret("dibscontainerkey", sasContainerToken);
+            client.SetSecret("testcontainerkey", sasContainerToken);
 
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
         }
 
-        private static string GetKeyVaultEndpoint() => "https://dibsfunckeyvault.vault.azure.net/";
+        private static string GetKeyVaultEndpoint() => "https://testfunckeyvault.vault.azure.net/";
     }
 }
