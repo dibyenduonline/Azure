@@ -1,6 +1,6 @@
 /*
 This code is for
-1. function app
+1. Azure function app
 2. generating the SAS token for a container
 3. storing the SAS token in Key vault.
 */
